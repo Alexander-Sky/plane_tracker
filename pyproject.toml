@@ -1,0 +1,29 @@
+[project]
+name = "plane-tracker"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Alexander Schischkin",email = "schischkin2@yandex.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "requests (>=2.33.1,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+lint = [
+    "flake8 (>=7.3.0,<8.0.0)",
+    "black (>=26.3.1,<27.0.0)",
+    "isort (>=8.0.1,<9.0.0)",
+    "mypy (>=1.20.2,<2.0.0)",
+    "pytest (>=9.0.3,<10.0.0)"
+]
+dev = [
+    "pytest-cov (>=7.1.0,<8.0.0)"
+]
