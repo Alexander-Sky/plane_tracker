@@ -75,7 +75,7 @@ def user_interaction() -> None:
         return
 
     # 3. Преобразуем в список объектов Aeroplane
-    aeroplanes = Aeroplane.cast_to_object_list(raw_planes.get("states", []))
+    aeroplanes = Aeroplane.cast_to_object_list(raw_planes)
     if not aeroplanes:
         print("❌ Нет данных о самолётах в указанном регионе.")
         return
