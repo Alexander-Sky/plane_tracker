@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """
 Главный модуль для трекера самолётов.
-Пользователь может выбрать страну, получить топ N по высоте,
-отфильтровать по стране регистрации и т.д.
 """
 
 import logging
@@ -12,7 +10,6 @@ from src.aeroplane import Aeroplane
 from src.plane_api import PlaneAPI
 from src.json_storage import JSONSaver
 
-# Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -21,16 +18,15 @@ logging.basicConfig(
 
 
 def get_top_n_aeroplanes(aeroplanes: List[Aeroplane], top_n: int) -> List[Aeroplane]:
-    """Возвращает топ N самолётов по высоте полёта (от большего к меньшему)."""
+    """Возвращает топ N самолётов по высоте полёта."""
     if not aeroplanes:
         return []
-    # Сортируем по высоте (убывание)
     sorted_planes = sorted(aeroplanes, key=lambda p: p.baro_altitude, reverse=True)
     return sorted_planes[:top_n]
 
 
 def filter_by_registration_country(aeroplanes: List[Aeroplane], countries: List[str]) -> List[Aeroplane]:
-    """Фильтрует самолёты по списку стран регистрации (без учёта регистра)."""
+    """Фильтрует самолёты по списку стран регистрации."""
     if not aeroplanes or not countries:
         return []
     countries_lower = [c.strip().lower() for c in countries]
@@ -48,7 +44,7 @@ def filter_by_altitude_range(aeroplanes: List[Aeroplane], min_alt: float, max_al
 
 
 def print_aeroplanes(aeroplanes: List[Aeroplane]) -> None:
-    """Выводит список самолётов в консоль в удобочитаемом виде."""
+    """Выводит список самолётов в консоль."""
     if not aeroplanes:
         print("❌ Самолёты не найдены.")
         return
@@ -61,31 +57,27 @@ def user_interaction() -> None:
     """Основной цикл взаимодействия с пользователем."""
     print("\n✈️  Добро пожаловать в трекер самолётов!")
 
-    # 1. Ввод страны
     country = input("Введите название страны (например, 'France'): ").strip()
     if not country:
         print("❌ Страна не может быть пустой.")
         return
 
-    # 2. Получение данных через API
     api = PlaneAPI()
     raw_planes = api.get_aeroplanes(country)
     if not raw_planes:
         print("❌ Не удалось получить данные о самолётах. Проверьте название страны или подключение к интернету.")
         return
 
-    # 3. Преобразуем в список объектов Aeroplane
+    # raw_planes — это уже список states
     aeroplanes = Aeroplane.cast_to_object_list(raw_planes)
     if not aeroplanes:
         print("❌ Нет данных о самолётах в указанном регионе.")
         return
 
-    # 4. Сохраняем в JSON
     saver = JSONSaver("data/planes.json")
     saver.save_all(aeroplanes)
     print(f"💾 Данные сохранены в файл data/planes.json (всего {len(aeroplanes)} записей)")
 
-    # 5. Основное меню
     while True:
         print("\n📌 Меню:")
         print("1. Показать топ N самолётов по высоте полёта")
