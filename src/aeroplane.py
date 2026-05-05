@@ -39,7 +39,7 @@ class Aeroplane:
             return 0.0
         try:
             return float(value)
-        except (TypeError, ValueError):
+        except TypeError, ValueError:
             return 0.0
 
     @classmethod
@@ -95,7 +95,10 @@ class Aeroplane:
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Aeroplane):
             return NotImplemented
-        return self.velocity == other.velocity and self.baro_altitude == other.baro_altitude
+        return (
+            self.velocity == other.velocity
+            and self.baro_altitude == other.baro_altitude
+        )
 
     def __lt__(self, other: "Aeroplane") -> bool:
         """Сравнение по скорости (для сортировки по возрастанию)."""

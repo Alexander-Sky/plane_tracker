@@ -1,5 +1,5 @@
-import pytest
 from unittest.mock import patch
+
 from src.plane_api import PlaneAPI
 
 
@@ -9,7 +9,10 @@ def test_get_aeroplanes_success(mock_get):
     # Мокаем ответ Nominatim
     mock_get.side_effect = [
         MockResponse([{"boundingbox": ["40", "50", "-10", "10"]}], 200),
-        MockResponse({"states": [["a", "b", "c", None, None, None, None, 10000.0, None, 200.0]]}, 200),
+        MockResponse(
+            {"states": [["a", "b", "c", None, None, None, None, 10000.0, None, 200.0]]},
+            200,
+        ),
     ]
     api = PlaneAPI()
     result = api.get_aeroplanes("Spain")
@@ -28,6 +31,7 @@ def test_get_aeroplanes_no_country(mock_get):
 
 class MockResponse:
     """Заглушка для ответа requests."""
+
     def __init__(self, json_data, status_code):
         self.json_data = json_data
         self.status_code = status_code

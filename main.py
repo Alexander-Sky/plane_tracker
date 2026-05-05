@@ -7,13 +7,13 @@ import logging
 from typing import List
 
 from src.aeroplane import Aeroplane
-from src.plane_api import PlaneAPI
 from src.json_storage import JSONSaver
+from src.plane_api import PlaneAPI
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler()]
+    handlers=[logging.StreamHandler()],
 )
 
 
@@ -25,18 +25,23 @@ def get_top_n_aeroplanes(aeroplanes: List[Aeroplane], top_n: int) -> List[Aeropl
     return sorted_planes[:top_n]
 
 
-def filter_by_registration_country(aeroplanes: List[Aeroplane], countries: List[str]) -> List[Aeroplane]:
+def filter_by_registration_country(
+    aeroplanes: List[Aeroplane], countries: List[str]
+) -> List[Aeroplane]:
     """Фильтрует самолёты по списку стран регистрации."""
     if not aeroplanes or not countries:
         return []
     countries_lower = [c.strip().lower() for c in countries]
     return [
-        p for p in aeroplanes
+        p
+        for p in aeroplanes
         if p.origin_country and p.origin_country.lower() in countries_lower
     ]
 
 
-def filter_by_altitude_range(aeroplanes: List[Aeroplane], min_alt: float, max_alt: float) -> List[Aeroplane]:
+def filter_by_altitude_range(
+    aeroplanes: List[Aeroplane], min_alt: float, max_alt: float
+) -> List[Aeroplane]:
     """Фильтрует самолёты по диапазону высот."""
     if not aeroplanes:
         return []
@@ -65,7 +70,9 @@ def user_interaction() -> None:
     api = PlaneAPI()
     raw_planes = api.get_aeroplanes(country)
     if not raw_planes:
-        print("❌ Не удалось получить данные о самолётах. Проверьте название страны или подключение к интернету.")
+        print(
+            "❌ Не удалось получить данные о самолётах. Проверьте название страны или подключение к интернету."
+        )
         return
 
     # raw_planes — это уже список states
@@ -76,7 +83,9 @@ def user_interaction() -> None:
 
     saver = JSONSaver("data/planes.json")
     saver.save_all(aeroplanes)
-    print(f"💾 Данные сохранены в файл data/planes.json (всего {len(aeroplanes)} записей)")
+    print(
+        f"💾 Данные сохранены в файл data/planes.json (всего {len(aeroplanes)} записей)"
+    )
 
     while True:
         print("\n📌 Меню:")
@@ -97,7 +106,9 @@ def user_interaction() -> None:
             print_aeroplanes(top_planes)
 
         elif choice == "2":
-            countries_input = input("Введите страны регистрации через запятую (например, 'Russia, United States'): ")
+            countries_input = input(
+                "Введите страны регистрации через запятую (например, 'Russia, United States'): "
+            )
             countries = [c.strip() for c in countries_input.split(",") if c.strip()]
             filtered = filter_by_registration_country(aeroplanes, countries)
             print_aeroplanes(filtered)

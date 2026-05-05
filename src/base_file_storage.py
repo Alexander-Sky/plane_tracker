@@ -3,7 +3,7 @@
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List
 
 from src.aeroplane import Aeroplane
 
@@ -22,7 +22,9 @@ class BaseFileStorage(ABC):
         pass
 
     @abstractmethod
-    def get_aeroplanes_by_altitude(self, min_alt: float, max_alt: float) -> List[Aeroplane]:
+    def get_aeroplanes_by_altitude(
+        self, min_alt: float, max_alt: float
+    ) -> List[Aeroplane]:
         """Возвращает список самолётов в заданном диапазоне высот."""
         pass
 

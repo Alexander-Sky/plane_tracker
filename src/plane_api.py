@@ -1,5 +1,5 @@
 import logging
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import requests
 
@@ -46,7 +46,9 @@ class PlaneAPI(BaseAPI):
         # 3. Извлекаем список самолётов
         states = aeroplanes_response.get("states")
         if not isinstance(states, list):
-            logger.warning(f"Поле 'states' отсутствует или имеет неверный тип: {type(states)}")
+            logger.warning(
+                f"Поле 'states' отсутствует или имеет неверный тип: {type(states)}"
+            )
             return []
 
         logger.info(f"Найдено {len(states)} самолётов над {country}")
@@ -82,7 +84,9 @@ class PlaneAPI(BaseAPI):
 
         bounding_box = data[0].get("boundingbox")
         if not bounding_box or len(bounding_box) != 4:
-            logger.warning(f"boundingbox отсутствует или имеет неверный формат: {bounding_box}")
+            logger.warning(
+                f"boundingbox отсутствует или имеет неверный формат: {bounding_box}"
+            )
             return []
 
         logger.debug(f"Координаты для {country}: {bounding_box}")
